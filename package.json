@@ -3,7 +3,7 @@
   "name": "blitlink",
   "title": "BlitLink",
   "description": "Quickly store and retrieve links for future reference.",
-  "icon": "command-icon.png",
+  "icon": "BlitLink.png",
   "author": "RobertBolender",
   "categories": [
     "Productivity"
