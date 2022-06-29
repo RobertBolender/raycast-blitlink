@@ -19,7 +19,7 @@ export default function Command() {
         <SearchListItem key={searchResult.title} searchResult={searchResult} />
       ))}
       {!state.searchText && state.results.length === 0 && (
-        <List.EmptyView title="Type or paste your first link to get started!" />
+        <List.EmptyView title="Type or paste your first link to get started!" icon="BlitLink.png" />
       )}
       {!!state.searchText && state.results.length === 0 && (
         <List.EmptyView title="No matches found" description="Save as a new link?" actions={
