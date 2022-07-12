@@ -32,7 +32,7 @@ export default function Command() {
   );
 }
 
-function SearchListItem({ searchResult, onEdit }: { searchResult: SearchResult, onEdit: (text: string) => void }) {
+function SearchListItem({ searchResult, onEdit }: { searchResult: SearchResult, onEdit: (text?: string) => void }) {
   const { push } = useNavigation();
   return (
     <List.Item
@@ -68,13 +68,21 @@ function SearchListItem({ searchResult, onEdit }: { searchResult: SearchResult, 
               shortcut={{ modifiers: ["cmd"], key: "l" }}
             />
           </ActionPanel.Section>
+          <ActionPanel.Section>
+            <Action
+              title="Delete link"
+              icon={Icon.Trash}
+              onAction={() => deleteLink(searchResult.rowid, onEdit)}
+              shortcut={{ modifiers: ["cmd"], key: "backspace" }}
+            />
+          </ActionPanel.Section>
         </ActionPanel>
       }
     />
   );
 }
 
-function EditForm(props: { rowid?: string, text?: string, link?: string, title?: string, shortcut?: string, onEdit: (text: string) => void }) {
+function EditForm(props: { rowid?: string, text?: string, link?: string, title?: string, shortcut?: string, onEdit: (text?: string) => void }) {
   const { rowid = "", text, link, title, shortcut, onEdit } = props;
 
   const { pop } = useNavigation();
@@ -82,7 +90,7 @@ function EditForm(props: { rowid?: string, text?: string, link?: string, title?:
   async function handleSubmit(values: SearchResult) {
     const { text = "", link = "", title = "", shortcut = "" } = values;
     await appendLink(rowid, text, link, title, shortcut);
-    onEdit(text);
+    onEdit();
     pop();
   }
 
@@ -116,7 +124,7 @@ function useSearch() {
   const cancelRef = useRef<AbortController | null>(null);
 
   const search = useCallback(
-    async function search(searchText: string) {
+    async function search(searchText: string = "") {
       cancelRef.current?.abort();
       cancelRef.current = new AbortController();
       setState((oldState) => ({
@@ -170,6 +178,13 @@ async function appendLink(rowid: string, text: string, link: string, title: stri
   }
 }
 
+async function deleteLink(rowid: string, onDelete: () => void) {
+  const results = await exec(`sqlite3 "${getLinkFileName()}" "delete from blitlinks where rowid=${rowid};"`);
+  console.log({ results })
+  showToast({ style: Toast.Style.Success, title: "Link deleted" });
+  onDelete();
+}
+
 async function performSearch(query: string): Promise<any> {
   var results = {} as any;
 
@@ -206,7 +221,7 @@ interface SearchState {
 }
 
 interface SearchResult {
-  rowid?: string;
+  rowid: string;
   text?: string;
   link?: string;
   title?: string;
