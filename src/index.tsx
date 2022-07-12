@@ -107,7 +107,7 @@ function EditForm(props: { rowid?: string, text?: string, link?: string, title?:
     >
       <Form.TextField id="text" title="Text" defaultValue={text ?? ""} />
       <Form.TextField id="link" title="Link" defaultValue={link ?? ""} />
-      <Form.TextField id="title" title="Title" defaultValue={title ?? ""} />
+      <Form.TextField id="title" title="Title" defaultValue={title ?? ""} info="Used for Markdown links" />
       <Form.TextField id="shortcut" title="Shortcut" defaultValue={shortcut ?? ""} />
     </Form>
   )
