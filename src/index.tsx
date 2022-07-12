@@ -2,14 +2,15 @@ import { ActionPanel, Action, Clipboard, Detail, Form, Icon, List, showToast, To
 import { useState, useEffect, useRef, useCallback } from "react";
 import path from "path";
 import { promisify } from "util";
+import { exec as cp_exec } from "child_process";
 
-const exec = promisify(require('child_process').exec);
+const exec = promisify(cp_exec);
 const LINK_FILE_NAME = "blitlinks.db";
 
 function useSqliteDatabase() {
   useEffect(() => {
     async function init() {
-      const result = await exec(`sqlite3 "${getLinkFileName()}" "create virtual table if not exists blitlinks using fts5(text, link, title, shortcut);"`);
+      await exec(`sqlite3 "${getLinkFileName()}" "create virtual table if not exists blitlinks using fts5(text, link, title, shortcut);"`);
     }
     init();
   }, []);
@@ -145,7 +146,7 @@ function EditForm(props: { rowid?: string, text?: string, link?: string, title?:
 }
 
 function previewAndCopy(push: (view: JSX.Element) => void, searchResult: SearchResult) {
-  Clipboard.copy(searchResult.link!);
+  Clipboard.copy(searchResult.link!); //eslint-disable-line @typescript-eslint/no-non-null-assertion
   showToast({ style: Toast.Style.Success, title: "Copied link to clipboard" });
   push(<Detail markdown={`![](${searchResult.link})`} actions={
     <ActionPanel>
@@ -180,7 +181,7 @@ function useSearch() {
   const cancelRef = useRef<AbortController | null>(null);
 
   const search = useCallback(
-    async function search(searchText: string = "") {
+    async function search(searchText = "") {
       cancelRef.current?.abort();
       cancelRef.current = new AbortController();
       setState((oldState) => ({
@@ -241,8 +242,8 @@ async function deleteLink(rowid: string, onDelete: () => void) {
   onDelete();
 }
 
-async function performSearch(query: string): Promise<any> {
-  var results = {} as any;
+async function performSearch(query: string): Promise<SearchResult[]> {
+  let results = {} as { stdout?: string, stderr?: string };
 
   if (!query || !query.trim()) {
     results = await exec(`sqlite3 "${getLinkFileName()}" -json "select rowid, text, link, title, shortcut from blitlinks order by rowid desc;"`);
