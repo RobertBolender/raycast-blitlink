@@ -105,7 +105,7 @@ function previewAndCopy(push: (view: JSX.Element) => void, searchResult: SearchR
 }
 
 function useSearch() {
-  const [state, setState] = useState<SearchState>({ results: [], isLoading: false });
+  const [state, setState] = useState<SearchState>({ results: [], isLoading: true });
   const cancelRef = useRef<AbortController | null>(null);
 
   const search = useCallback(
@@ -115,7 +115,7 @@ function useSearch() {
       setState((oldState) => ({
         ...oldState,
         searchText,
-        isLoading: false,
+        isLoading: true,
       }));
 
       try {
@@ -167,10 +167,7 @@ async function performSearch(query: string): Promise<any> {
   var results = {} as any;
 
   if (!query || !query.trim()) {
-    // The first search appears slow for some reason, but each subsequent search is fast.
-    // By silently executing this first search and throwing away the result, search appears faster to the user.
-    await exec(`sqlite3 "${getLinkFileName()}" "select rowid, text, link, title, shortcut from blitlinks order by rowid desc limit 1;"`);
-    results = [];
+    results = await exec(`sqlite3 "${getLinkFileName()}" -json "select rowid, text, link, title, shortcut from blitlinks order by rowid desc;"`);
   } else {
     query = query.replace(/[^a-zA-Z0-9]/g, " ");
     results = await exec(`sqlite3 "${getLinkFileName()}" -json "select rowid, text, link, title, shortcut from blitlinks where blitlinks match 'shortcut : ${escape(query)} OR ${escape(query)}*' order by rank"`);
