@@ -135,7 +135,20 @@ function EditForm(props: { rowid?: string, text?: string, link?: string, title?:
 function previewAndCopy(push: (view: JSX.Element) => void, searchResult: SearchResult) {
   Clipboard.copy(searchResult.link!);
   showToast({ style: Toast.Style.Success, title: "Copied link to clipboard" });
-  push(<Detail markdown={`![](${searchResult.link})`} />)
+  push(<Detail markdown={`![](${searchResult.link})`} actions={
+    <ActionPanel>
+      <Action.CopyToClipboard
+        title="Copy plain URL"
+        content={`${searchResult.link}`}
+        shortcut={{ modifiers: ["cmd"], key: "u" }}
+      />
+      <Action.CopyToClipboard
+        title="Copy markdown link"
+        content={`[${searchResult.title}](${searchResult.link})`}
+        shortcut={{ modifiers: ["cmd"], key: "l" }}
+      />
+    </ActionPanel>
+  } />)
 }
 
 function useSearch() {
