@@ -1,4 +1,4 @@
-import { ActionPanel, Action, Clipboard, Detail, Form, List, showToast, Toast, environment, useNavigation } from "@raycast/api";
+import { ActionPanel, Action, Clipboard, Detail, Form, Icon, List, showToast, Toast, environment, useNavigation } from "@raycast/api";
 import { useState, useEffect, useRef, useCallback } from "react";
 import path from "path";
 import { promisify } from "util";
@@ -23,7 +23,7 @@ export default function Command() {
       {!!state.searchText && state.results.length === 0 && (
         <List.EmptyView title="No matches found" description="Save as a new link?" actions={
           <ActionPanel>
-            <Action.Push title="Save link" target={<EditForm text={state.searchText ?? ""} onEdit={search} />} />
+            <Action.Push icon={Icon.Plus} title="Save link" target={<EditForm text={state.searchText ?? ""} onEdit={search} />} />
           </ActionPanel>
         } />
       )
@@ -46,11 +46,12 @@ function SearchListItem({ searchResult, onEdit }: { searchResult: SearchResult, 
             {searchResult.link && (
               <>
                 <Action.OpenInBrowser title="Open in Browser" url={searchResult.link} />
-                <Action title="Copy link and Preview Image" onAction={() => previewAndCopy(push, searchResult)} />
+                <Action icon={Icon.Clipboard} title="Copy link and Preview Image" onAction={() => previewAndCopy(push, searchResult)} />
               </>
             )}
             <Action.Push
               title="Edit link"
+              icon={Icon.Pencil}
               target={<EditForm {...searchResult} onEdit={onEdit} />}
               shortcut={{ modifiers: [], key: "tab" }}
             />
