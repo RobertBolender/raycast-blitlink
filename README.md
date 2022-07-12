@@ -9,7 +9,8 @@ Reasons to use this extension instead of the built-in Quicklinks:
     - `cmd+u` to copy the plain URL
     - `cmd+l` to copy the Markdown link
 - You can preview images (memes) within Raycast before sharing
-- You are me and you want to play with building your own Raycast Extension
+    - `enter` to preview the image and copy the plain URL to the clipboard
+- You are me and you want to experiment with building your own Raycast Extension
 
 Notes:
 
