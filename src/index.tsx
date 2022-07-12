@@ -47,6 +47,10 @@ export default function Command() {
   );
 }
 
+function looksLikeAnImage(text: string) {
+  return text.match(/\.(jpg|jpeg|png|gif|bmp|webp|svg)$/i);
+}
+
 function SearchListItem({ searchResult, onEdit }: { searchResult: SearchResult, onEdit: (text?: string) => void }) {
   const { push } = useNavigation();
   return (
@@ -58,11 +62,11 @@ function SearchListItem({ searchResult, onEdit }: { searchResult: SearchResult, 
       actions={
         <ActionPanel>
           <ActionPanel.Section>
+            {searchResult.link && looksLikeAnImage(searchResult.link) && (
+              <Action icon={Icon.Clipboard} title="Copy link and Preview Image" onAction={() => previewAndCopy(push, searchResult)} />
+            )}
             {searchResult.link && (
-              <>
-                <Action.OpenInBrowser title="Open in Browser" url={searchResult.link} />
-                <Action icon={Icon.Clipboard} title="Copy link and Preview Image" onAction={() => previewAndCopy(push, searchResult)} />
-              </>
+              <Action.OpenInBrowser title="Open in Browser" url={searchResult.link} />
             )}
             <Action.Push
               title="Edit link"
@@ -131,6 +135,7 @@ function EditForm(props: { rowid?: string, text?: string, link?: string, title?:
 function previewAndCopy(push: (view: JSX.Element) => void, searchResult: SearchResult) {
   Clipboard.copy(searchResult.link!);
   showToast({ style: Toast.Style.Success, title: "Copied link to clipboard" });
+  console.log(searchResult.link)
   push(<Detail markdown={`![](${searchResult.link})`} />)
 }
 
