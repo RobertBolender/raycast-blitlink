@@ -4,7 +4,6 @@ import path from "path";
 import { promisify } from "util";
 
 const exec = promisify(require('child_process').exec);
-const BLITLINK_PATH = "~/code/go-blitlink/go-blitlink";
 const LINK_FILE_NAME = "blitlinks.db";
 
 export default function Command() {
@@ -151,19 +150,28 @@ function useSearch() {
 }
 
 async function appendLink(text: string, link: string, title: string, shortcut: string) {
-  const results = await exec(`${BLITLINK_PATH} "${getLinkFileName()}" insert "${text}" "${link}" "${title}" "${shortcut}"`);
+  const results = await exec(`sqlite3 "${getLinkFileName()}" "insert into blitlinks(text, link, title, shortcut) values(${text}, ${link}, ${title}, ${shortcut})"`);
   console.log({ results })
   showToast({ style: Toast.Style.Success, title: "Link saved" });
 }
 
 async function performSearch(query: string): Promise<any> {
-  const results = await exec(`${BLITLINK_PATH} "${getLinkFileName()}" query t`);
-  const json = JSON.parse(results.stdout);
-  const items = json.map((item: any) => {
-    const [id, text, link, title, shortcut] = item;
-    return { id, text, link, title, shortcut }
-  });
-  return items;
+  var results = {} as any;
+
+  if (!query) {
+    results = await exec(`sqlite3 "${getLinkFileName()}" -json "select rowid, text, link, title, shortcut from blitlinks where shortcut IS NOT NULL"`);
+  } else {
+    results = await exec(`sqlite3 "${getLinkFileName()}" -json "select rowid, text, link, title, shortcut from blitlinks where blitlinks match 'shortcut : ${query} OR ${query}*' order by rank"`);
+  }
+  if (!results.stdout) return [];
+
+  try {
+    const json = JSON.parse(results.stdout);
+    return json;
+  } catch (e) {
+    console.error(e);
+    return [];
+  }
 }
 
 function getLinkFileName() {
