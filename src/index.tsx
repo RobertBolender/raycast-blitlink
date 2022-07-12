@@ -135,7 +135,6 @@ function EditForm(props: { rowid?: string, text?: string, link?: string, title?:
 function previewAndCopy(push: (view: JSX.Element) => void, searchResult: SearchResult) {
   Clipboard.copy(searchResult.link!);
   showToast({ style: Toast.Style.Success, title: "Copied link to clipboard" });
-  console.log(searchResult.link)
   push(<Detail markdown={`![](${searchResult.link})`} />)
 }
 
