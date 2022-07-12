@@ -28,12 +28,17 @@ export default function Command() {
         <SearchListItem key={searchResult.rowid} searchResult={searchResult} onEdit={search} />
       ))}
       {!state.searchText && state.results.length === 0 && (
-        <List.EmptyView title="Type or paste your first link to get started!" icon="BlitLink.png" />
+        <List.EmptyView title="Type or paste any text to get started" icon="BlitLink.png" />
       )}
       {!!state.searchText && state.results.length === 0 && (
         <List.EmptyView title="No matches found" description="Save as a new link?" actions={
           <ActionPanel>
-            <Action.Push icon={Icon.Plus} title="Save link" target={<EditForm text={state.searchText ?? ""} onEdit={search} />} />
+            <Action.Push
+              icon={Icon.Plus}
+              title="Save link"
+              target={<EditForm text={state.searchText ?? ""} onEdit={search} />}
+              shortcut={{ modifiers: [], key: "tab" }}
+            />
           </ActionPanel>
         } />
       )
