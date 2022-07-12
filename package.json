@@ -5,6 +5,7 @@
   "description": "Quickly store and retrieve links for future reference.",
   "icon": "BlitLink.png",
   "author": "RobertBolender",
+  "owner": "github",
   "categories": [
     "Productivity"
   ],
