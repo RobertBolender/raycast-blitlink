@@ -2,7 +2,6 @@ import { ActionPanel, Action, Clipboard, Detail, Form, List, showToast, Toast, e
 import { useState, useEffect, useRef, useCallback } from "react";
 import path from "path";
 import { promisify } from "util";
-import { isDataView } from "util/types";
 
 const exec = promisify(require('child_process').exec);
 const BLITLINK_PATH = "~/code/go-blitlink/go-blitlink";
