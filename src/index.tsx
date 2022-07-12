@@ -6,7 +6,17 @@ import { promisify } from "util";
 const exec = promisify(require('child_process').exec);
 const LINK_FILE_NAME = "blitlinks.db";
 
+function useSqliteDatabase() {
+  useEffect(() => {
+    async function init() {
+      const result = await exec(`sqlite3 "${getLinkFileName()}" "create virtual table if not exists blitlinks using fts5(text, link, title, shortcut);"`);
+    }
+    init();
+  }, []);
+}
+
 export default function Command() {
+  useSqliteDatabase();
   const { state, search } = useSearch();
   return (
     <List
