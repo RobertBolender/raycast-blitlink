@@ -49,16 +49,22 @@ function SearchListItem({ searchResult, onEdit }: { searchResult: SearchResult, 
                 <Action title="Copy link and Preview Image" onAction={() => previewAndCopy(push, searchResult)} />
               </>
             )}
-            <Action.Push title="Edit link" target={<EditForm {...searchResult} onEdit={onEdit} />} />
+            <Action.Push
+              title="Edit link"
+              target={<EditForm {...searchResult} onEdit={onEdit} />}
+              shortcut={{ modifiers: [], key: "tab" }}
+            />
           </ActionPanel.Section>
           <ActionPanel.Section>
             <Action.CopyToClipboard
               title="Copy plain URL"
               content={`${searchResult.link}`}
+              shortcut={{ modifiers: ["cmd"], key: "u" }}
             />
             <Action.CopyToClipboard
               title="Copy markdown link"
               content={`[${searchResult.title}](${searchResult.link})`}
+              shortcut={{ modifiers: ["cmd"], key: "l" }}
             />
           </ActionPanel.Section>
         </ActionPanel>
