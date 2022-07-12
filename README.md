@@ -1,4 +1,4 @@
-# Raycast extension for BlitLink
+# BlitLink (Raycast Extension)
 
 Quickly store and retrieve links for future reference.  
 Be the fastest to respond in Slack with the perfect relevant link or reaction GIF.
@@ -12,7 +12,9 @@ Reasons to use this extension instead of the built-in Quicklinks:
     - `cmd+o` to past the Markdown link to the frontmost active app
 - You can preview images (memes) within Raycast before sharing
     - `enter` to preview the image and copy the plain URL to the clipboard
-- You are me and you want to experiment with building your own Raycast Extension
+    - `enter` again from the preview to paste the plain URL to the frontmost active app
+    - `cmd+enter` from the preview to paste the Markdown link to the frontmost active app
+    - The above copy/paste shortcuts also work from this view
 
 Notes:
 
