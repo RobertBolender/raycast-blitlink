@@ -38,6 +38,7 @@ function SearchListItem({ searchResult, onEdit }: { searchResult: SearchResult, 
     <List.Item
       title={searchResult.text ?? ""}
       subtitle={searchResult.link}
+      accessories={[{ text: searchResult.shortcut }]}
       detail={<List.Item.Detail markdown={`![](${searchResult.link})\n\n<b>${searchResult.shortcut}</b>\n${searchResult.title}`} />}
       actions={
         <ActionPanel>
