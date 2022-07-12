@@ -1,4 +1,7 @@
 # Raycast extension for BlitLink
 
 Quickly store and retrieve links for future reference.  
-Uses the [BlitLink CLI](https://github.com/RobertBolender/go-blitlink) to store links in a local SQLite database.
+Uses a local SQLite database.
+
+- Assumes a copy of `sqlite3` is present in the PATH.
+- `sqlite3` is installed by default on modern versions of MacOS.
