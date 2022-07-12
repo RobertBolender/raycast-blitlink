@@ -8,6 +8,8 @@ Reasons to use this extension instead of the built-in Quicklinks:
 - You can copy links as either plain URLs or as markdown links (e.g.: `[title](url)`)
     - `cmd+u` to copy the plain URL
     - `cmd+l` to copy the Markdown link
+    - `cmd+p` to paste the plain URL to the frontmost active app
+    - `cmd+o` to past the Markdown link to the frontmost active app
 - You can preview images (memes) within Raycast before sharing
     - `enter` to preview the image and copy the plain URL to the clipboard
 - You are me and you want to experiment with building your own Raycast Extension

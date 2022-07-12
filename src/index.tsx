@@ -86,6 +86,18 @@ function SearchListItem({ searchResult, onEdit }: { searchResult: SearchResult, 
               content={`[${searchResult.title}](${searchResult.link})`}
               shortcut={{ modifiers: ["cmd"], key: "l" }}
             />
+            <Action.Paste
+              title="Paste link"
+              icon={Icon.Clipboard}
+              shortcut={{ modifiers: ["cmd"], key: "p" }}
+              content={`${searchResult.link}`}
+            />
+            <Action.Paste
+              title="Paste markdown link"
+              icon={Icon.Clipboard}
+              shortcut={{ modifiers: ["cmd"], key: "o" }}
+              content={`[${searchResult.title}](${searchResult.link})`}
+            />
           </ActionPanel.Section>
           <ActionPanel.Section>
             <Action
@@ -137,6 +149,18 @@ function previewAndCopy(push: (view: JSX.Element) => void, searchResult: SearchR
   showToast({ style: Toast.Style.Success, title: "Copied link to clipboard" });
   push(<Detail markdown={`![](${searchResult.link})`} actions={
     <ActionPanel>
+      <Action.Paste
+        title="Paste link"
+        icon={Icon.Clipboard}
+        shortcut={{ modifiers: ["cmd"], key: "p" }}
+        content={`${searchResult.link}`}
+      />
+      <Action.Paste
+        title="Paste markdown link"
+        icon={Icon.Clipboard}
+        shortcut={{ modifiers: ["cmd"], key: "o" }}
+        content={`[${searchResult.title}](${searchResult.link})`}
+      />
       <Action.CopyToClipboard
         title="Copy plain URL"
         content={`${searchResult.link}`}
