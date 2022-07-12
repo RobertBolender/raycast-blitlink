@@ -10,6 +10,8 @@ import {
   Toast,
   environment,
   useNavigation,
+  confirmAlert,
+  clearSearchBar,
 } from "@raycast/api";
 import { useState, useEffect, useRef, useCallback } from "react";
 import path from "path";
@@ -272,10 +274,12 @@ async function appendLink(rowid: string, text: string, link: string, title: stri
 }
 
 async function deleteLink(rowid: string, onDelete: () => void) {
+  if (!(await confirmAlert({ title: "Delete link", message: "Deletion is permanent. Are you sure?" }))) return;
   const results = await exec(`sqlite3 "${getLinkFileName()}" "delete from blitlinks where rowid=${rowid};"`);
   console.log({ results });
   showToast({ style: Toast.Style.Success, title: "Link deleted" });
   onDelete();
+  await clearSearchBar();
 }
 
 async function performSearch(query: string): Promise<SearchResult[]> {
